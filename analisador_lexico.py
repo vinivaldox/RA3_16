@@ -290,5 +290,8 @@ def lerTokens(nome_arquivo: str):
             contexto["tokens"].append(
                 Token("OPERADOR", contexto["buffer"], contexto.get("linha", 0))
             )
-
+        elif estado == "divisao":
+            contexto["tokens"].append(
+                Token("OPERADOR", "/", contexto.get("linha", 0))
+            )
     return [contexto["tokens"]]
