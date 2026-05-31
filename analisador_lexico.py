@@ -239,3 +239,56 @@ def estado_relacional(caractere: str, contexto: dict) -> str:
             contexto["buffer"] = ""
             return estado_inicial(caractere, contexto)
     return "relacional"
+
+
+def lerTokens(nome_arquivo: str):
+    """Lê um arquivo e tokeniza seu conteúdo."""
+    try:
+        with open(nome_arquivo, "r", encoding="utf-8") as f:
+            texto = f.read()
+    except UnicodeDecodeError:
+        with open(nome_arquivo, "r", encoding="latin-1") as f:
+            texto = f.read()
+
+    # Remover comentários
+    texto_sem_comentarios = remover_comentarios(texto)
+
+    # Tokenizar
+    contexto = {"tokens": [], "buffer": "", "linha": 1, "estado": "inicial"}
+    estado = "inicial"
+
+    for caractere in texto_sem_comentarios:
+        if estado == "inicial":
+            estado = estado_inicial(caractere, contexto)
+        elif estado == "numero":
+            estado = estado_numero(caractere, contexto)
+        elif estado == "numero_flutuante":
+            estado = estado_numero_flutuante(caractere, contexto)
+        elif estado == "letra":
+            estado = estado_letra(caractere, contexto)
+        elif estado == "divisao":
+            estado = estado_divisao(caractere, contexto)
+        elif estado == "relacional":
+            estado = estado_relacional(caractere, contexto)
+
+    # Finalizar buffer pendente
+    if contexto["buffer"]:
+        if estado == "numero" or estado == "numero_flutuante":
+            token = Token("NUMERO", contexto["buffer"], contexto.get("linha", 0))
+            contexto["tokens"].append(token)
+        elif estado == "letra":
+            palavra = contexto["buffer"]
+            if palavra in KEYWORDS:
+                tipo = "KEYWORD"
+            elif palavra in COMANDOS:
+                tipo = "COMANDO"
+            else:
+                tipo = "VARIAVEL"
+            token = Token(tipo, palavra, contexto.get("linha", 0))
+            contexto["tokens"].append(token)
+        elif estado == "relacional":
+            contexto["tokens"].append(
+                Token("OPERADOR", contexto["buffer"], contexto.get("linha", 0))
+            )
+
+    return [contexto["tokens"]]
