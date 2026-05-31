@@ -139,3 +139,37 @@ def estado_inicial(caractere: str, contexto: dict) -> str:
         raise ValueError(
             f"Caractere inválido: '{caractere}' na linha {contexto.get('linha', 0)}"
         )
+    
+def estado_numero(caractere: str, contexto: dict) -> str:
+    """Estado para processamento de números."""
+    if caractere.isdigit():
+        contexto["buffer"] += caractere
+        return "numero"
+    elif caractere == ".":
+        contexto["buffer"] += caractere
+        return "numero_flutuante"
+    else:
+        # termina o número
+        token = Token("NUMERO", contexto["buffer"], contexto.get("linha", 0))
+        contexto["tokens"].append(token)
+        contexto["buffer"] = ""
+        # reprocessa o caractere atual
+        return estado_inicial(caractere, contexto)
+
+
+def estado_numero_flutuante(caractere: str, contexto: dict) -> str:
+    """Estado para processamento de números com ponto decimal."""
+    if caractere.isdigit():
+        contexto["buffer"] += caractere
+        return "numero_flutuante"
+    elif caractere == ".":
+        # Detecta segundo ponto decimal - erro
+        raise ValueError(
+            f"Número malformado: dois pontos - '{contexto['buffer']}' na linha {contexto.get('linha', 0)}"
+        )
+    else:
+        # termina o número
+        token = Token("NUMERO", contexto["buffer"], contexto.get("linha", 0))
+        contexto["tokens"].append(token)
+        contexto["buffer"] = ""
+        return estado_inicial(caractere, contexto)
