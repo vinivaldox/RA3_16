@@ -173,3 +173,69 @@ def estado_numero_flutuante(caractere: str, contexto: dict) -> str:
         contexto["tokens"].append(token)
         contexto["buffer"] = ""
         return estado_inicial(caractere, contexto)
+    
+def estado_letra(caractere: str, contexto: dict) -> str:
+
+    """Estado para processamento de identificadores e palavras-chave."""
+    if caractere.isalnum() or caractere == "_":
+        contexto["buffer"] += caractere
+        return "letra"
+    else:
+        palavra = contexto["buffer"]
+        contexto["buffer"] = ""
+
+        if palavra in KEYWORDS:
+            tipo = "KEYWORD"
+        elif palavra in COMANDOS:
+            tipo = "COMANDO"
+        else:
+            tipo = "VARIAVEL"
+
+        token = Token(tipo, palavra, contexto.get("linha", 0))
+        contexto["tokens"].append(token)
+        return estado_inicial(caractere, contexto)
+
+
+def estado_divisao(caractere: str, contexto: dict) -> str:
+    """Estado para diferenciar / de //."""
+    if caractere == "/":
+        contexto["tokens"].append(Token("OPERADOR", "//", contexto.get("linha", 0)))
+        return "inicial"
+    else:
+        contexto["tokens"].append(Token("OPERADOR", "/", contexto.get("linha", 0)))
+        contexto["buffer"] = ""
+        return estado_inicial(caractere, contexto)
+
+
+def estado_relacional(caractere: str, contexto: dict) -> str:
+    """Estado para processar operadores relacionais (simples e compostos)."""
+    buffer = contexto["buffer"]
+
+    # Operadores que podem ser duplos
+    if buffer in "<>=!":
+        if caractere == "=":
+            # Forme operador duplo (<= >= == !=)
+            op_duplo = buffer + "="
+            contexto["tokens"].append(
+                Token("OPERADOR", op_duplo, contexto.get("linha", 0))
+            )
+            contexto["buffer"] = ""
+            return "inicial"
+        elif buffer == "<" and caractere == "<":
+            # Não tem << na linguagem, trata como 
+            contexto["tokens"].append(Token("OPERADOR", "<", contexto.get("linha", 0)))
+            contexto["buffer"] = ""
+            return estado_inicial(caractere, contexto)
+        elif buffer == ">" and caractere == ">":
+            # Não tem >> na linguagem, trata como >
+            contexto["tokens"].append(Token("OPERADOR", ">", contexto.get("linha", 0)))
+            contexto["buffer"] = ""
+            return estado_inicial(caractere, contexto)
+        else:
+            # Operador simples, reprocessa o caractere atual
+            contexto["tokens"].append(
+                Token("OPERADOR", buffer, contexto.get("linha", 0))
+            )
+            contexto["buffer"] = ""
+            return estado_inicial(caractere, contexto)
+    return "relacional"
