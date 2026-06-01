@@ -240,3 +240,82 @@ class AnalisadorSemantico:
             return "bool"
 
         return None
+    
+def _validar_estrutura_controle(self, tipo_condicao: Optional[str], tipo_estrutura: str, linha: int) -> bool:
+    """Valida que uma estrutura de controle tenha condição lógica.
+    aargs:
+        tipo_condicao: Tipo da condição
+        tipo_estrutura: "IF" ou "WHILE"
+        linha: Número da linha
+    returns:
+        True se válido, False se erro
+    """
+    if tipo_condicao != "bool":
+        self.erros_semanticos.append(
+            f"Linha {linha}: Estrutura '{tipo_estrutura}' requer condição do tipo 'bool', "
+            f"mas recebeu '{tipo_condicao}'."
+        )
+        return False
+    return True
+
+
+def salvar_arvore_aumentada(
+    self, arvore: NoArvore, nome_arquivo: str = "arvore_aumentada.json"
+):
+    """Salva a árvore aumentada em JSON."""
+    import json
+
+    def serializar(no):
+        return no.serializar()
+
+    with open(nome_arquivo, "w", encoding="utf-8") as f:
+        json.dump(serializar(arvore), f, ensure_ascii=False, indent=2)
+
+
+def gerar_relatorio(self) -> str:
+    """Gera um relatório completo da análise semântica."""
+    relatorio = "=" * 60 + "\n"
+    relatorio += "RELATÓRIO DE ANÁLISE SEMÂNTICA\n"
+    relatorio += "=" * 60 + "\n\n"
+
+    relatorio += self.tabela_simbolos.relatorio()
+
+    if self.erros_semanticos:
+        relatorio += f"\nERROS DE TIPAGEM ({len(self.erros_semanticos)}):\n"
+        for erro in self.erros_semanticos:
+            relatorio += f"  [!] {erro}\n"
+
+    return relatorio
+
+
+def processar_entrada_semantica(
+    arquivo: str, arvore_sintativa: NoArvore
+) -> Tuple[bool, NoArvore]:
+    """Processa a análise semântica completa de um arquivo.
+
+    Args:
+        arquivo: Nome do arquivo de entrada
+        arvore_sintativa: Árvore sintática da Fase 2
+
+    Returns:
+        Tupla (sucesso, arvore_aumentada)
+    """
+    analisador = AnalisadorSemantico()
+    try:
+        sucesso, arvore_aumentada, erros = analisador.analisar(arvore_sintativa)
+
+        print("\n" + "=" * 60)
+        print("FASE 3: ANÁLISE SEMÂNTICA")
+        print("=" * 60)
+        print(analisador.gerar_relatorio())
+
+        if not sucesso:
+            print("\n[ERRO] Análise semântica falhou!")
+            return False, None
+
+        print("[OK] Análise semântica concluída com sucesso.\n")
+        return True, arvore_aumentada
+
+    except Exception as e:
+        print(f"[ERRO] Falha na análise semântica: {e}")
+        return False, None
