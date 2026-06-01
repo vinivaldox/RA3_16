@@ -1,5 +1,3 @@
-# COMMIT 1 (Vinicius): Gramática LL(1)
-
 # Nome | apelido no Github | link do Github
 # Andrei de Carvalho Bley | andrei-bley | https://github.com/andrei-bley
 # Vinicius Cordeiro Vogt | vinivaldox | https://github.com/vinivaldox

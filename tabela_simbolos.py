@@ -4,7 +4,6 @@
 # Vitor Matias Percegona Bilbao | vitormpbilbao | https://github.com/vitormpbilbao
 
 # Grupo: RA3_16
-
 # MÓDULO: Tabela de Símbolos
 
 import json
@@ -50,27 +49,29 @@ class TabelaSimbolos:
             linha: Número da linha onde foi definida
 
         Returns:
-            True se definido com sucesso, False se já existia
+            True se definido com sucesso, False se já existia com tipo incompatível
         """
         if nome == "RES":
             self.erros_semanticos.append(
-                f"Linha {linha}: 'RES' é uma palavra-chave reservada e não pode ser usada como variável."
+                f"Linha {linha}: 'RES' é uma palavra-chave reservada e não pode "
+                f"ser usada como variável."
             )
             return False
 
         if nome in self.simbolos:
-            # Verificar se é redefinição incompatível
             simbolo_existente = self.simbolos[nome]
             if simbolo_existente.tipo != tipo:
                 self.erros_semanticos.append(
-                    f"Linha {linha}: Variável '{nome}' já foi definida como tipo '{simbolo_existente.tipo}' "
-                    f"(definida na linha {simbolo_existente.linha_definicao}). "
+                    f"Linha {linha}: Variável '{nome}' já foi definida como tipo "
+                    f"'{simbolo_existente.tipo}' (linha {simbolo_existente.linha_definicao}). "
                     f"Tentativa de redefinição com tipo incompatível '{tipo}'."
                 )
                 return False
             else:
+                # Redefinição com mesmo tipo: apenas aviso
                 self.avisos.append(
-                    f"Linha {linha}: Variável '{nome}' foi redefinida (primeira definição na linha {simbolo_existente.linha_definicao})."
+                    f"Linha {linha}: Variável '{nome}' foi redefinida com o mesmo tipo "
+                    f"'{tipo}' (primeira definição na linha {simbolo_existente.linha_definicao})."
                 )
 
         self.simbolos[nome] = Simbolo(
@@ -83,40 +84,31 @@ class TabelaSimbolos:
         return True
 
     def usar_variavel(self, nome: str, linha: int) -> None | str:
-        """Usa uma variável, retornando seu tipo."""
+        """Usa uma variável para leitura, retornando seu tipo.
+
+        Gera erro semântico se a variável não foi previamente definida.
+
+        Args:
+            nome: Nome da variável
+            linha: Número da linha onde foi usada
+
+        Returns:
+            Tipo da variável, ou None se não definida (erro registrado)
+        """
         if nome in self.simbolos:
             simbolo = self.simbolos[nome]
             simbolo.linha_ultimo_uso = linha
             return simbolo.tipo
         else:
+            # ERRO SEMÂNTICO: variável usada sem definição prévia via (valor VAR MEM)
+            self.erros_semanticos.append(
+                f"Linha {linha}: Variável '{nome}' usada antes de ser definida. "
+                f"Defina-a primeiro com: (valor {nome} MEM)."
+            )
             return None
 
-    def inferir_tipo(self, nome: str, tipo_inferido: str, linha: int) -> bool:
-        """Infere o tipo de uma variável se ainda não foi definida."""
-        if nome == "RES":
-            return True  # RES não tem tipo fixo
-
-        if nome not in self.simbolos:
-            self.simbolos[nome] = Simbolo(
-                nome=nome,
-                tipo=tipo_inferido,
-                linha_definicao=linha,
-                linha_ultimo_uso=linha,
-                inicializado=False,
-            )
-            return True
-        else:
-            # Verificar compatibilidade
-            simbolo = self.simbolos[nome]
-            if simbolo.tipo != tipo_inferido:
-                self.avisos.append(
-                    f"Linha {linha}: Variável '{nome}' tem tipo '{simbolo.tipo}', "
-                    f"mas foi usada em contexto que espera '{tipo_inferido}'."
-                )
-        return True
-
     def obter_tipo(self, nome: str) -> None | str:
-        """Obtém o tipo de uma variável."""
+        """Obtém o tipo de uma variável sem registrar uso."""
         if nome in self.simbolos:
             return self.simbolos[nome].tipo
         return None
