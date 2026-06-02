@@ -1,0 +1,4 @@
+(START)
+*{ Teste 1: Operações Aritmética e Tipagem - Validação de tipos }*
+( 1 I MEM )
+(END)
