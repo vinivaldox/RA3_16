@@ -1,0 +1,14 @@
+{
+  "simbolos": {
+    "I": {
+      "nome": "I",
+      "tipo": "int",
+      "linha_definicao": 3,
+      "linha_ultimo_uso": 3,
+      "escopo": "global",
+      "inicializado": true
+    }
+  },
+  "erros": [],
+  "avisos": []
+}
