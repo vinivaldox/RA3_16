@@ -1,0 +1,204 @@
+[
+  {
+    "instrucao": 1,
+    "arvore": {
+      "rotulo": "Programa",
+      "tipo": "nao_terminal",
+      "valor": null,
+      "tipo_semantico": null,
+      "categoria_semantica": null,
+      "linha": 0,
+      "filhos": [
+        {
+          "rotulo": "PARENTESIS_ESQ",
+          "tipo": "terminal",
+          "valor": "(",
+          "tipo_semantico": null,
+          "categoria_semantica": null,
+          "linha": 1,
+          "filhos": []
+        },
+        {
+          "rotulo": "START",
+          "tipo": "terminal",
+          "valor": "START",
+          "tipo_semantico": null,
+          "categoria_semantica": null,
+          "linha": 1,
+          "filhos": []
+        },
+        {
+          "rotulo": "PARENTESIS_DIR",
+          "tipo": "terminal",
+          "valor": ")",
+          "tipo_semantico": null,
+          "categoria_semantica": null,
+          "linha": 1,
+          "filhos": []
+        },
+        {
+          "rotulo": "ListaOuFim",
+          "tipo": "nao_terminal",
+          "valor": null,
+          "tipo_semantico": null,
+          "categoria_semantica": null,
+          "linha": 0,
+          "filhos": [
+            {
+              "rotulo": "PARENTESIS_ESQ",
+              "tipo": "terminal",
+              "valor": "(",
+              "tipo_semantico": null,
+              "categoria_semantica": null,
+              "linha": 3,
+              "filhos": []
+            },
+            {
+              "rotulo": "ConteudoOuFim",
+              "tipo": "nao_terminal",
+              "valor": null,
+              "tipo_semantico": null,
+              "categoria_semantica": null,
+              "linha": 0,
+              "filhos": [
+                {
+                  "rotulo": "Conteudo",
+                  "tipo": "nao_terminal",
+                  "valor": null,
+                  "tipo_semantico": null,
+                  "categoria_semantica": null,
+                  "linha": 0,
+                  "filhos": [
+                    {
+                      "rotulo": "Elemento",
+                      "tipo": "nao_terminal",
+                      "valor": null,
+                      "tipo_semantico": null,
+                      "categoria_semantica": null,
+                      "linha": 0,
+                      "filhos": [
+                        {
+                          "rotulo": "NUMERO",
+                          "tipo": "terminal",
+                          "valor": "1",
+                          "tipo_semantico": null,
+                          "categoria_semantica": null,
+                          "linha": 3,
+                          "filhos": []
+                        }
+                      ]
+                    },
+                    {
+                      "rotulo": "RestoConteudo",
+                      "tipo": "nao_terminal",
+                      "valor": null,
+                      "tipo_semantico": null,
+                      "categoria_semantica": null,
+                      "linha": 0,
+                      "filhos": [
+                        {
+                          "rotulo": "Elemento",
+                          "tipo": "nao_terminal",
+                          "valor": null,
+                          "tipo_semantico": null,
+                          "categoria_semantica": null,
+                          "linha": 0,
+                          "filhos": [
+                            {
+                              "rotulo": "VARIAVEL",
+                              "tipo": "terminal",
+                              "valor": "I",
+                              "tipo_semantico": null,
+                              "categoria_semantica": null,
+                              "linha": 3,
+                              "filhos": []
+                            }
+                          ]
+                        },
+                        {
+                          "rotulo": "Cauda",
+                          "tipo": "nao_terminal",
+                          "valor": null,
+                          "tipo_semantico": null,
+                          "categoria_semantica": null,
+                          "linha": 0,
+                          "filhos": [
+                            {
+                              "rotulo": "MEM",
+                              "tipo": "terminal",
+                              "valor": "MEM",
+                              "tipo_semantico": null,
+                              "categoria_semantica": null,
+                              "linha": 3,
+                              "filhos": []
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "rotulo": "PARENTESIS_DIR",
+                  "tipo": "terminal",
+                  "valor": ")",
+                  "tipo_semantico": null,
+                  "categoria_semantica": null,
+                  "linha": 3,
+                  "filhos": []
+                },
+                {
+                  "rotulo": "ListaOuFim",
+                  "tipo": "nao_terminal",
+                  "valor": null,
+                  "tipo_semantico": null,
+                  "categoria_semantica": null,
+                  "linha": 0,
+                  "filhos": [
+                    {
+                      "rotulo": "PARENTESIS_ESQ",
+                      "tipo": "terminal",
+                      "valor": "(",
+                      "tipo_semantico": null,
+                      "categoria_semantica": null,
+                      "linha": 4,
+                      "filhos": []
+                    },
+                    {
+                      "rotulo": "ConteudoOuFim",
+                      "tipo": "nao_terminal",
+                      "valor": null,
+                      "tipo_semantico": null,
+                      "categoria_semantica": null,
+                      "linha": 0,
+                      "filhos": [
+                        {
+                          "rotulo": "END",
+                          "tipo": "terminal",
+                          "valor": "END",
+                          "tipo_semantico": null,
+                          "categoria_semantica": null,
+                          "linha": 4,
+                          "filhos": []
+                        },
+                        {
+                          "rotulo": "PARENTESIS_DIR",
+                          "tipo": "terminal",
+                          "valor": ")",
+                          "tipo_semantico": null,
+                          "categoria_semantica": null,
+                          "linha": 4,
+                          "filhos": []
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+]
