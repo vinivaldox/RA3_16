@@ -1,0 +1,23 @@
+(START)
+*{ Teste 2: Tipos Mistos (Int/Float) e Estruturas de Controle }*
+( 100 VALOR MEM )
+( 7 DIVISOR MEM )
+( 2.718 E MEM )
+( 0 CONT MEM )
+( VALOR DIVISOR + )
+( VALOR DIVISOR - )
+( VALOR DIVISOR * )
+( VALOR DIVISOR / )
+( VALOR DIVISOR % )
+*{ Potenciação }*
+( DIVISOR 3 ^ )
+( VALOR DIVISOR // )
+( 1 RES )
+( 3 RES )
+*{ Operação com resultado anterior }*
+( ( 1 RES ) E * )
+*{ Teste WHILE com acumulador }*
+( 0 ACUM MEM )
+( ( CONT 5 < ) ( ( ( ACUM CONT + ) ACUM MEM ) ( ( CONT 1 + ) CONT MEM ) ) WHILE )
+( ACUM )
+(END)
