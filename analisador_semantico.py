@@ -95,8 +95,8 @@ class AnalisadorSemantico:
         if len(no.filhos) < 2:
             return self._analisar_filhos(no)
 
-        elem_val = no.filhos[0]   # Elemento (valor ou condição)
-        resto = no.filhos[1]       # RestoConteudo
+        elem_val = no.filhos[0]  # Elemento (valor ou condição)
+        resto = no.filhos[1]  # RestoConteudo
 
         cauda_tipo, var_nome, cauda_linha = self._inspecionar_cauda(resto)
 
@@ -109,7 +109,9 @@ class AnalisadorSemantico:
         # Expressão normal: avalia todos os filhos em sequência
         return self._analisar_filhos(no)
 
-    def _inspecionar_cauda(self, resto: NoArvore) -> Tuple[Optional[str], Optional[str], int]:
+    def _inspecionar_cauda(
+        self, resto: NoArvore
+    ) -> Tuple[Optional[str], Optional[str], int]:
         """Inspeciona o terminal dentro de Cauda em RestoConteudo.
 
         Returns:
@@ -283,8 +285,8 @@ class AnalisadorSemantico:
             tipo_resultado = None
 
             if len(self.stack_rpn) >= 2:
-                tipo_dir = self.stack_rpn[-1][2]   # topo: operando direito
-                tipo_esq = self.stack_rpn[-2][2]   # penúltimo: operando esquerdo
+                tipo_dir = self.stack_rpn[-1][2]  # topo: operando direito
+                tipo_esq = self.stack_rpn[-2][2]  # penúltimo: operando esquerdo
                 tipo_resultado = self._validar_operacao(
                     no.valor, tipo_esq, tipo_dir, no.linha
                 )
@@ -446,3 +448,9 @@ def processar_entrada_semantica(
     print(analisador.gerar_relatorio())
 
     return sucesso, arvore_aumentada
+
+
+if __name__ == "__main__":
+    from main import main
+
+    main()
